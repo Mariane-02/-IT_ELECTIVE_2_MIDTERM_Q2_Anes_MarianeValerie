@@ -1,0 +1,43 @@
+@model List<PlaylistApp.Models.Entities.Playlist>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-0">My Playlists</h2>
+        <small class="text-muted">Logged in as @ViewBag.Username</small>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-success">+ New Playlist</a>
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No playlists yet. Create one!</div>
+}
+
+<div class="row">
+    @foreach (var playlist in Model)
+    {
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">@playlist.Title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">by @playlist.CreatorName</h6>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var video in playlist.Videos)
+                        {
+                            <li class="list-group-item">
+                                <a href="@video.YouTubeUrl" target="_blank">@video.YouTubeUrl</a>
+                                @if (!string.IsNullOrWhiteSpace(video.TrackNote))
+                                {
+                                    <div class="text-muted small">@video.TrackNote</div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>
